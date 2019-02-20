@@ -1,0 +1,23 @@
+server:
+  port: 8082
+
+spring:
+  jpa:
+    show-sql: true
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: userservice.events
+          group: notificationservices
+      rabbit:
+        bindings:
+          input:
+            consumer:
+              autoBindDlq: true
+
+logging:
+  level:
+    org.hibernate.type.descriptor.sql: trace

@@ -1,0 +1,8 @@
+rootProject.name = 'todo-plat'
+
+include 'task-service'
+include 'task-service-api'
+include 'notification-service'
+include 'user-service'
+include 'user-service-api'
+
