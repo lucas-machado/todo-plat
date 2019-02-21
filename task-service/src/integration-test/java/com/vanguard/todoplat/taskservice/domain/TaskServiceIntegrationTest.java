@@ -1,14 +1,14 @@
 package com.vanguard.todoplat.taskservice.domain;
 
+import com.vanguard.todoplat.taskservice.api.events.TaskCreatedEvent;
 import com.vanguard.todoplat.taskservice.domain.exceptions.TaskNotFoundException;
 import com.vanguard.todoplat.taskservice.domain.model.Task;
 import com.vanguard.todoplat.taskservice.domain.proxies.NotificationServiceProxy;
-import com.vanguard.todoplat.taskservice.domain.repositories.TaskRepository;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,29 +19,25 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
 public class TaskServiceIntegrationTest {
 
+    @MockBean
+    private NotificationServiceProxy notificationService;
+
     @Autowired
-    private TaskRepository repository;
-
-    private NotificationServiceProxy notificationService = mock(NotificationServiceProxy.class);
-
     private TaskService taskService;
+
     private final Long USER_ID_1 = 1L;
     private final String DESCRIPTION_1 = "Desc 1";
     private final String DESCRIPTION_2 = "Desc 2";
     private final LocalDateTime DATETIME_1 = LocalDateTime.of(2019, 1, 1, 1, 0);
     private final LocalDateTime DATETIME_2 = LocalDateTime.of(2019, 2, 1, 1, 0);
-
-    @Before
-    public void setUp() {
-        taskService = new TaskService(repository, notificationService);
-    }
 
     @Test
     public void shouldCreateTask() {
@@ -51,6 +47,7 @@ public class TaskServiceIntegrationTest {
         assertEquals(task.getUserId(), USER_ID_1);
         assertEquals(task.getDescription(), DESCRIPTION_1);
         assertEquals(task.getDateTime(), DATETIME_1);
+        verify(notificationService).taskCreated(any(TaskCreatedEvent.class));
     }
 
     @Test

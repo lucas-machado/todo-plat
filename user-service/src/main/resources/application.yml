@@ -6,6 +6,6 @@ spring:
     stream:
       bindings:
         output:
-          destination: userservice.events
+          destination: userServiceEvents
           producer:
             autoBindDlq: true

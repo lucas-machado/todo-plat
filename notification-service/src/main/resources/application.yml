@@ -10,13 +10,14 @@ spring:
     stream:
       bindings:
         input:
-          destination: userservice.events
-          group: notificationservices
+          destination: userServiceEvents
+          group: notificationServices
       rabbit:
         bindings:
           input:
             consumer:
               autoBindDlq: true
+              republishToDlq: true
 
 logging:
   level:
