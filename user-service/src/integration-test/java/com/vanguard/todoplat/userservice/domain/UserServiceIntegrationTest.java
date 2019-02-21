@@ -47,10 +47,11 @@ public class UserServiceIntegrationTest {
     private final String NEWEMAIL = "newsome@email.com";
 
     @Test
-    public void shouldCreateUser() throws JsonProcessingException {
+    public void shouldAllowToCreateUser() throws JsonProcessingException {
         User user = userService.createUser(USERNAME, PASSWORD, EMAIL);
         Optional<User> loadedUser = userRepository.findById(user.getId());
         UserCreatedEvent userCreatedEvent = new UserCreatedEvent(user.getId(), user.getUsername(), user.getEmail());
+
         Message<?> userCreatedMessage = messageCollector.forChannel(output).poll();
 
         assertTrue(loadedUser.isPresent());
@@ -62,7 +63,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void shouldUpdateUser() throws UserNotFoundException, JsonProcessingException {
+    public void shouldAllowToUpdateUser() throws UserNotFoundException, JsonProcessingException {
         User user = userService.createUser(USERNAME, PASSWORD, EMAIL);
         messageCollector.forChannel(output).poll(); //extracting the create message
 
