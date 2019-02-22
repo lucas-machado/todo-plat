@@ -1,12 +1,12 @@
 package com.vanguard.todoplat.taskservice.domain.repositories;
 
 import com.vanguard.todoplat.taskservice.domain.model.Task;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface TaskRepository extends CrudRepository<Task, Long> {
-    List<Task> findByUserId(Long userId);
+public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
+    Page<Task> findByUserId(Long userId, Pageable pageable);
 }

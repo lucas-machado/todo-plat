@@ -1,5 +1,6 @@
 package com.vanguard.todoplat.taskservice.web;
 
+import com.vanguard.todoplat.taskservice.TaskServiceProperties;
 import com.vanguard.todoplat.taskservice.api.web.CreateTaskRequest;
 import com.vanguard.todoplat.taskservice.api.web.CreateTaskResponse;
 import com.vanguard.todoplat.taskservice.api.web.GetTasksResponse;
@@ -8,6 +9,10 @@ import com.vanguard.todoplat.taskservice.api.web.UpdateTaskRequest;
 import com.vanguard.todoplat.taskservice.domain.TaskService;
 import com.vanguard.todoplat.taskservice.domain.exceptions.TaskNotFoundException;
 import com.vanguard.todoplat.taskservice.domain.model.Task;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,9 +34,11 @@ import java.util.stream.Collectors;
 public class TaskController {
 
     private final TaskService taskService;
+    private final TaskServiceProperties serviceProperties;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, TaskServiceProperties serviceProperties) {
         this.taskService = taskService;
+        this.serviceProperties = serviceProperties;
     }
 
     @PostMapping
@@ -42,15 +49,23 @@ public class TaskController {
     }
 
     @GetMapping("/{userId}")
-    public GetTasksResponse getTasks(@PathVariable("userId") Long userId) {
-        List<TaskResponse> tasks = convertToTaskResponseList(taskService.getTasks(userId));
+    public GetTasksResponse getTasks(@PathVariable("userId") Long userId,
+                                     Pageable pageRequest) {
+        if(pageRequest.getPageSize() > serviceProperties.getMaxPageSize()) {
+            pageRequest = PageRequest.of(pageRequest.getPageNumber(), serviceProperties.getMaxPageSize(),
+                    pageRequest.getSort());
+        }
+
+        Page<TaskResponse> tasks = convertToTaskResponseList(taskService.getTasks(userId, pageRequest));
         return new GetTasksResponse(tasks);
     }
 
-    private List<TaskResponse> convertToTaskResponseList(List<Task> tasks) {
-        return tasks.stream()
+    private Page<TaskResponse> convertToTaskResponseList(Page<Task> tasks) {
+        List<TaskResponse> taskResponses = tasks.getContent().stream()
                     .map(task -> new TaskResponse(task.getId(), task.getDescription()))
                     .collect(Collectors.toList());
+
+        return new PageImpl<>(taskResponses, tasks.getPageable(), tasks.getTotalElements());
     }
 
     @PutMapping("/{taskId}")

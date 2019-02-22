@@ -1,11 +1,15 @@
 package com.vanguard.todoplat.taskservice.web;
 
+import com.vanguard.todoplat.taskservice.TaskServiceProperties;
 import com.vanguard.todoplat.taskservice.api.web.CreateTaskRequest;
 import com.vanguard.todoplat.taskservice.api.web.UpdateTaskRequest;
 import com.vanguard.todoplat.taskservice.domain.TaskService;
 import com.vanguard.todoplat.taskservice.domain.exceptions.TaskNotFoundException;
 import com.vanguard.todoplat.taskservice.domain.model.Task;
 import org.junit.Test;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 
@@ -20,12 +24,14 @@ import static org.mockito.Mockito.when;
 public class TaskControllerTest {
 
     private final TaskService taskService = mock(TaskService.class);
-    private final TaskController taskController = new TaskController(taskService);
-    private static final Long USER_ID = 12345L;
-    private static final String TASK_DESCRIPTION = "abcd";
-    private static final Long TASK_ID = 1L;
-    private static final LocalDateTime TASK_DATETIME = LocalDateTime.of(2019, 1, 1, 1, 0);
+    private final TaskServiceProperties serviceProperties = new TaskServiceProperties();
+    private final TaskController taskController = new TaskController(taskService, serviceProperties);
+    private final Long USER_ID = 12345L;
+    private final String TASK_DESCRIPTION = "abcd";
+    private final Long TASK_ID = 1L;
+    private final LocalDateTime TASK_DATETIME = LocalDateTime.of(2019, 1, 1, 1, 0);
     private Task task = new Task(TASK_ID, USER_ID, TASK_DESCRIPTION, TASK_DATETIME);
+    private final Pageable PAGE_REQUEST = PageRequest.of(0, 20);
 
     @Test
     public void shouldCreateTask() {
@@ -59,7 +65,7 @@ public class TaskControllerTest {
 
     @Test
     public void shouldGetUserTasks() {
-        when(taskService.getTasks(USER_ID)).thenReturn(singletonList(task));
+        when(taskService.getTasks(USER_ID, PAGE_REQUEST)).thenReturn(new PageImpl<>(singletonList(task)));
 
         given().
                        standaloneSetup(taskController).

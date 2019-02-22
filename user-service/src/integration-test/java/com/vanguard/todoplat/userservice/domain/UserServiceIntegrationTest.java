@@ -41,6 +41,7 @@ public class UserServiceIntegrationTest {
     @Autowired
     private MessageCollector messageCollector;
 
+
     private final String USERNAME = "username";
     private final String PASSWORD = "password";
     private final String EMAIL = "some@email.com";

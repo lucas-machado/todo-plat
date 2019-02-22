@@ -9,11 +9,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -38,6 +40,7 @@ public class TaskServiceIntegrationTest {
     private final String DESCRIPTION_2 = "Desc 2";
     private final LocalDateTime DATETIME_1 = LocalDateTime.of(2019, 1, 1, 1, 0);
     private final LocalDateTime DATETIME_2 = LocalDateTime.of(2019, 2, 1, 1, 0);
+    private final Pageable PAGE_REQUEST = PageRequest.of(0, 20);
 
     @Test
     public void shouldCreateTask() {
@@ -54,10 +57,10 @@ public class TaskServiceIntegrationTest {
     public void shouldCreateManyTasks() {
         Task task1 = taskService.createTask(USER_ID_1, DESCRIPTION_1, DATETIME_1);
         Task task2 = taskService.createTask(USER_ID_1, DESCRIPTION_2, DATETIME_2);
-        List<Task> tasks = taskService.getTasks(USER_ID_1);
+        Page<Task> tasks = taskService.getTasks(USER_ID_1, PAGE_REQUEST);
 
-        assertEquals(2, tasks.size());
-        assertTrue(taskService.getTasks(USER_ID_1).containsAll(asList(task1, task2)));
+        assertEquals(2, tasks.getTotalElements());
+        assertTrue(taskService.getTasks(USER_ID_1, PAGE_REQUEST).getContent().containsAll(asList(task1, task2)));
     }
 
     @Test
@@ -75,7 +78,7 @@ public class TaskServiceIntegrationTest {
 
         taskService.deleteTask(task.getId());
 
-        assertTrue(taskService.getTasks(USER_ID_1).isEmpty());
+        assertTrue(taskService.getTasks(USER_ID_1, PAGE_REQUEST).isEmpty());
     }
 
     @Test(expected = TaskNotFoundException.class)

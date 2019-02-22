@@ -22,3 +22,6 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql: trace
+todoplat:
+  tasks:
+    max-page-size: 5

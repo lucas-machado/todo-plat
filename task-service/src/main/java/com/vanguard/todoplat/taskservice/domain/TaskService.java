@@ -8,10 +8,11 @@ import com.vanguard.todoplat.taskservice.domain.proxies.NotificationServiceProxy
 import com.vanguard.todoplat.taskservice.domain.repositories.TaskRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -31,8 +32,8 @@ public class TaskService {
         return saved;
     }
 
-    public List<Task> getTasks(Long userId) {
-        return taskRepository.findByUserId(userId);
+    public Page<Task> getTasks(Long userId, Pageable pageRequest) {
+        return taskRepository.findByUserId(userId, pageRequest);
     }
 
     public Task updateTask(Long taskId, String description, LocalDateTime dateTime) throws TaskNotFoundException {

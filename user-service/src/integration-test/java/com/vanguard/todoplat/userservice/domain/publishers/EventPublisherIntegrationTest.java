@@ -1,4 +1,4 @@
-package com.vanguard.todoplat.userservice.publishers;
+package com.vanguard.todoplat.userservice.domain.publishers;
 
 import org.junit.Test;
 

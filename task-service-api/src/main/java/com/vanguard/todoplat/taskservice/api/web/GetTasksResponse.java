@@ -2,10 +2,9 @@ package com.vanguard.todoplat.taskservice.api.web;
 
 
 import lombok.Value;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 @Value
 public class GetTasksResponse {
-    private final List<TaskResponse> tasks;
+    private final Page<TaskResponse> tasks;
 }

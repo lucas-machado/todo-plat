@@ -8,9 +8,11 @@ import com.vanguard.todoplat.taskservice.domain.proxies.NotificationServiceProxy
 import com.vanguard.todoplat.taskservice.domain.repositories.TaskRepository;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import static com.googlecode.catchexception.CatchException.catchException;
@@ -53,11 +55,12 @@ public class TaskServiceTest {
 
     @Test
     public void shouldAllowToRetrieveTasks() {
-        when(taskRepository.findByUserId(USER_ID)).thenReturn(asList(TASK_1, TASK_2));
+        PageRequest pageable = PageRequest.of(0, 20);
+        when(taskRepository.findByUserId(USER_ID, pageable)).thenReturn(new PageImpl<>(asList(TASK_1, TASK_2)));
 
-        List<Task> tasks = taskService.getTasks(USER_ID);
+        Page<Task> tasks = taskService.getTasks(USER_ID, pageable);
 
-        assertTrue(tasks.containsAll(asList(TASK_1, TASK_2)));
+        assertTrue(tasks.getContent().containsAll(asList(TASK_1, TASK_2)));
     }
 
     @Test

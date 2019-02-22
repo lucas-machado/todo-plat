@@ -1,7 +1,6 @@
-package com.vanguard.todoplat.userservice.publishers;
+package com.vanguard.todoplat.userservice.domain.publishers;
 
 import com.vanguard.todoplat.userservice.api.events.UserCreatedEvent;
-import com.vanguard.todoplat.userservice.domain.publishers.UserEventPublisher;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.messaging.Message;
