@@ -1,7 +1,7 @@
 package com.vanguard.taskplat.notificationservice.messaging;
 
-import com.vanguard.taskplat.notificationservice.domain.NotificationService;
-import com.vanguard.taskplat.notificationservice.domain.exceptions.UserNotFoundException;
+import com.vanguard.taskplat.notificationservice.application.NotificationService;
+import com.vanguard.taskplat.notificationservice.application.domain.exceptions.UserNotFoundException;
 import com.vanguard.todoplat.userservice.api.events.UserCreatedEvent;
 import com.vanguard.todoplat.userservice.api.events.UserUpdatedEvent;
 import lombok.extern.slf4j.Slf4j;

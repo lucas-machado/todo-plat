@@ -1,7 +1,7 @@
 package com.vanguard.taskplat.notificationservice.web;
 
-import com.vanguard.taskplat.notificationservice.domain.NotificationService;
-import com.vanguard.taskplat.notificationservice.domain.exceptions.NotificationNotFoundException;
+import com.vanguard.taskplat.notificationservice.application.NotificationService;
+import com.vanguard.taskplat.notificationservice.application.domain.exceptions.NotificationNotFoundException;
 import com.vanguard.todoplat.taskservice.api.events.TaskCreatedEvent;
 import com.vanguard.todoplat.taskservice.api.events.TaskUpdatedEvent;
 import org.junit.Test;

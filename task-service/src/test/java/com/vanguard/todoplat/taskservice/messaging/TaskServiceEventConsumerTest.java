@@ -1,6 +1,6 @@
 package com.vanguard.todoplat.taskservice.messaging;
 
-import com.vanguard.todoplat.taskservice.domain.TaskService;
+import com.vanguard.todoplat.taskservice.application.TaskService;
 import com.vanguard.todoplat.userservice.api.events.UserCreatedEvent;
 import org.junit.Test;
 

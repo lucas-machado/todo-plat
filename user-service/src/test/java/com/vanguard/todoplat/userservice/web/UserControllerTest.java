@@ -2,8 +2,8 @@ package com.vanguard.todoplat.userservice.web;
 
 import com.vanguard.todoplat.userservice.api.web.CreateUserRequest;
 import com.vanguard.todoplat.userservice.api.web.UpdateUserRequest;
-import com.vanguard.todoplat.userservice.domain.UserService;
-import com.vanguard.todoplat.userservice.domain.model.User;
+import com.vanguard.todoplat.userservice.application.UserService;
+import com.vanguard.todoplat.userservice.application.domain.model.User;
 import org.junit.Test;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
