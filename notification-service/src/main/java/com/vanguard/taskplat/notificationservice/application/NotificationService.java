@@ -7,12 +7,12 @@ import com.vanguard.taskplat.notificationservice.application.domain.model.User;
 import com.vanguard.taskplat.notificationservice.application.domain.repositories.NotificationRepository;
 import com.vanguard.taskplat.notificationservice.application.domain.repositories.UserRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Service
+@Component
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;

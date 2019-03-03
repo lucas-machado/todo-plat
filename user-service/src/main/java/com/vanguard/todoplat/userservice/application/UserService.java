@@ -6,9 +6,9 @@ import com.vanguard.todoplat.userservice.application.domain.exceptions.UserNotFo
 import com.vanguard.todoplat.userservice.application.domain.model.User;
 import com.vanguard.todoplat.userservice.application.domain.publishers.UserEventPublisher;
 import com.vanguard.todoplat.userservice.application.domain.repositories.UserRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class UserService {
     private UserRepository userRepository;
     private UserEventPublisher userEventPublisher;
